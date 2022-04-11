@@ -12,7 +12,6 @@
         <activity
             android:name=".ui.home.HomeActivity"
             android:exported="true"
-            android:label="@string/app_name"
             android:screenOrientation="behind"
             android:theme="@style/Theme.ExpensesLife.NoActionBar">
             <intent-filter>

@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.example.expenseslife.ui.home.HomeViewModel" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/mainContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ui.home.HomeActivity">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/updateImageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:foreground="@drawable/selectable_item_background_round"
+            android:layout_marginTop="@dimen/semi_large_margin"
+            android:layout_marginEnd="@dimen/large_margin"
+            android:padding="@dimen/small_margin"
+            android:onClick="showExpensesMenu"
+            android:src="@drawable/ic_published_with_changes"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/expensesTypeTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/semi_large_margin"
+            android:textStyle="bold"
+            android:textSize="@dimen/font_20"
+            android:text="@{viewModel.title}"
+            app:layout_constraintBottom_toTopOf="@+id/moneyEditText"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:text="FOOD" />
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/moneyEditText"
+            style="@style/ExpensesLife.MoneyEditText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/large_margin"
+            android:layout_marginEnd="@dimen/large_margin"
+            android:text="@{viewModel.addExpenses}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.25" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/expensesTetView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/clear_expenses"
+            android:textSize="@dimen/font_16"
+            android:text="@{viewModel.expenses.toString()}"
+            app:layout_constraintBottom_toBottomOf="@+id/deleteImageView"
+            app:layout_constraintEnd_toStartOf="@+id/deleteImageView"
+            app:layout_constraintTop_toTopOf="@+id/deleteImageView"
+            tools:text="35:44" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/deleteImageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:foreground="@drawable/selectable_item_background_round"
+            android:onClick="showDeleteDialog"
+            android:padding="@dimen/small_margin"
+            android:src="@drawable/ic_delete_outline"
+            app:layout_constraintEnd_toEndOf="@+id/moneyEditText"
+            app:layout_constraintTop_toBottomOf="@+id/moneyEditText" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/totalTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/medium_margin"
+            android:layout_marginTop="@dimen/semi_large_margin"
+            android:text="@{@string/total_expenses(viewModel.totalExpenses)}"
+            app:layout_constraintStart_toStartOf="@+id/moneyEditText"
+            app:layout_constraintTop_toBottomOf="@+id/deleteImageView"
+            tools:text="total" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

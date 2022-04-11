@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="ExpensesLife.MoneyEditText" parent="Widget.AppCompat.EditText">
+        <item name="android:background">@drawable/edittext_background</item>
+        <item name="android:drawableStart">@drawable/ic_add_shopping</item>
+        <item name="android:drawablePadding">6dp</item>
+        <item name="android:hint">@string/add_expenses</item>
+        <item name="android:imeOptions">actionDone</item>
+        <item name="android:inputType">numberDecimal|numberSigned</item>
+        <item name="android:padding">10dp</item>
+        <item name="android:maxLength">7</item>
+    </style>
+</resources>

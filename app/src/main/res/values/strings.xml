@@ -1,0 +1,16 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="app_name">Expenses Life</string>
+    <string name="common_ok">OK</string>
+    <string name="delete_all_expenses">Delete all %s expenses?</string>
+    <string name="expenses_deleted">%s expenses deleted</string>
+    <string name="cancel" tools:ignore="ButtonCase">CANCEL</string>
+    <string name="add_expenses">Add expenses</string>
+    <string name="clear_expenses">Clear expenses</string>
+    <string name="confirm">Confirm</string>
+    <string name="total_expenses">total: %s</string>
+    <string name="action_food">Food</string>
+    <string name="action_fun">Fun</string>
+    <string name="action_things">Things</string>
+    <string name="type_changed">Expenses type changed</string>
+    <string name="expenses_updated">Expenses updated</string>
+</resources>

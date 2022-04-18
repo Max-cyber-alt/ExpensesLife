@@ -3,11 +3,9 @@ package com.example.expenseslife.ui.home
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.expenseslife.data.model.Expense
 import com.example.expenseslife.data.SharedPrefs
 import com.example.expenseslife.data.enums.ExpensesType
-import com.example.expenseslife.util.extensions.convertToDouble
-import com.example.expenseslife.util.extensions.isMinus
+import com.example.expenseslife.data.model.Expense
 import splitties.experimental.ExperimentalSplittiesApi
 
 @ExperimentalSplittiesApi
@@ -19,7 +17,7 @@ class HomeViewModel : ViewModel() {
     val title: LiveData<String> = _title
 
     private val _expenses = MutableLiveData(savedExpense.expenses)
-    val expenses: LiveData<Double> = _expenses
+    val expenses: LiveData<String> = _expenses
 
     private val _selectedExpType = MutableLiveData(savedExpense.expensesType)
     val selectedExpType = _selectedExpType
@@ -28,48 +26,49 @@ class HomeViewModel : ViewModel() {
     val addExpenses: LiveData<String> = _addExpenses
 
     private val _totalExpenses = MutableLiveData(getTotalExpenses())
-    val totalExpenses: LiveData<Double> = _totalExpenses
+    val totalExpenses: LiveData<String> = _totalExpenses
 
-    fun updateExpenses(expense: String, expensesType: ExpensesType, success: () -> Unit) {
+    fun updateExpenses(newExpense: Float, expensesType: ExpensesType, success: () -> Unit) {
         val result = when (expensesType) {
             ExpensesType.FOOD -> {
-                getUpdatedExpenses(expense, SharedPrefs.expensesFood).also {
-                    SharedPrefs.expensesFood = it.toString()
+                SharedPrefs.expensesFood.plus(newExpense).also {
+                    SharedPrefs.expensesFood = it
                 }
             }
             ExpensesType.FUN -> {
-                getUpdatedExpenses(expense, SharedPrefs.expensesFun).also {
-                    SharedPrefs.expensesFun = it.toString()
+                SharedPrefs.expensesFun.plus(newExpense).also {
+                    SharedPrefs.expensesFun = it
                 }
             }
             ExpensesType.THINGS -> {
-                getUpdatedExpenses(expense, SharedPrefs.expensesThins).also {
-                    SharedPrefs.expensesThins = it.toString()
+                SharedPrefs.expensesThins.plus(newExpense).also {
+                    SharedPrefs.expensesThins = it
                 }
             }
         }
 
-        _expenses.value = result
+        _expenses.value = String.format("%.2f", result)
         _totalExpenses.value = getTotalExpenses()
         _addExpenses.value = ""
         success.invoke()
     }
 
     fun changeExpensesType(expensesType: ExpensesType, success: () -> Unit) {
-        when (expensesType) {
+        val result: Float = when (expensesType) {
             ExpensesType.FOOD -> {
-                _expenses.value = SharedPrefs.expensesFood.convertToDouble()
+                SharedPrefs.expensesFood
             }
             ExpensesType.FUN -> {
-                _expenses.value = SharedPrefs.expensesFun.convertToDouble()
+                SharedPrefs.expensesFun
             }
             ExpensesType.THINGS -> {
-                _expenses.value = SharedPrefs.expensesThins.convertToDouble()
+                SharedPrefs.expensesThins
             }
         }
 
         SharedPrefs.selectedExpensesType = expensesType.name
         _title.value = expensesType.name
+        _expenses.value = String.format("%.2f", result)
         _selectedExpType.value = expensesType
         success.invoke()
     }
@@ -86,48 +85,43 @@ class HomeViewModel : ViewModel() {
                 SharedPrefs.resetThings()
             }
         }
-        _expenses.value = 0.0
+        _expenses.value = "0.00"
         _totalExpenses.value = getTotalExpenses()
     }
 
-    private fun getUpdatedExpenses(expense: String, expenses: String): Double {
-        return if (expense.isMinus()) {
-            expenses.convertToDouble().minus(expense.convertToDouble())
-        } else {
-            expenses.convertToDouble().plus(expense.convertToDouble())
-        }
-    }
-
-    private fun getTotalExpenses(): Double {
-        return SharedPrefs.expensesFood.convertToDouble()
-            .plus(SharedPrefs.expensesFun.convertToDouble())
-            .plus(SharedPrefs.expensesThins.convertToDouble())
+    private fun getTotalExpenses(): String {
+        val total = SharedPrefs.expensesFood
+            .plus(SharedPrefs.expensesFun)
+            .plus(SharedPrefs.expensesThins)
+        return String.format("%.2f", total)
     }
 
     private fun getSavedExpense(): Expense {
-        return when (SharedPrefs.selectedExpensesType) {
+        val expensesType: ExpensesType
+        val expenses: Float
+        when (SharedPrefs.selectedExpensesType) {
             ExpensesType.FOOD.name -> {
-                Expense(
-                    expensesType = ExpensesType.FOOD,
-                    expenses = SharedPrefs.expensesFood.convertToDouble()
-                )
+                expensesType = ExpensesType.FOOD
+                expenses = SharedPrefs.expensesFood
             }
             ExpensesType.FUN.name -> {
-                Expense(
-                    expensesType = ExpensesType.FUN,
-                    expenses = SharedPrefs.expensesFun.convertToDouble()
-                )
+                expensesType = ExpensesType.FUN
+                expenses = SharedPrefs.expensesFun
             }
             ExpensesType.THINGS.name -> {
-                Expense(
-                    expensesType = ExpensesType.THINGS,
-                    expenses = SharedPrefs.expensesThins.convertToDouble()
-                )
+                expensesType = ExpensesType.THINGS
+                expenses = SharedPrefs.expensesThins
             }
-            else -> Expense(
-                expensesType = ExpensesType.FOOD,
-                expenses = SharedPrefs.expensesFood.convertToDouble()
-            )
+            else -> {
+                expensesType = ExpensesType.FOOD
+                expenses = SharedPrefs.expensesFood
+            }
+
         }
+
+        return Expense(
+            expensesType = expensesType,
+            expenses = String.format("%.2f", expenses)
+        )
     }
 }

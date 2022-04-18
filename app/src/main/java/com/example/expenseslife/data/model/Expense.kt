@@ -4,5 +4,5 @@ import com.example.expenseslife.data.enums.ExpensesType
 
 data class Expense(
     val expensesType: ExpensesType,
-    val expenses: Double
+    val expenses: String
 )

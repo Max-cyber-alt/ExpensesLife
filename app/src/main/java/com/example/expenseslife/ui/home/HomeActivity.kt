@@ -65,7 +65,7 @@ class HomeActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickListener {
     }
 
     fun showDeleteDialog(@Suppress("UNUSED_PARAMETER") view: View?) {
-        if (homeViewModel.expenses.value == 0.0) return
+        if (homeViewModel.expenses.value == "0.00") return
 
         displayAlertDialog(
             title = getString(R.string.delete_all_expenses, selectedExpType.name),
@@ -94,7 +94,7 @@ class HomeActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickListener {
     private fun setupListeners() {
         binding.moneyEditText.setOnEditorActionListener(OnEditorActionListener { v, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
-                updateExpenses(v.text.toString())
+                updateExpenses(v.text.toString().toFloat())
                 return@OnEditorActionListener true
             }
             false
@@ -110,8 +110,8 @@ class HomeActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickListener {
         }
     }
 
-    private fun updateExpenses(updatedValue: String) {
-        homeViewModel.updateExpenses(updatedValue, selectedExpType) {
+    private fun updateExpenses(newExpense: Float) {
+        homeViewModel.updateExpenses(newExpense, selectedExpType) {
             loadUpdatedExpensesAnimation()
             showToast(R.string.expenses_updated)
         }

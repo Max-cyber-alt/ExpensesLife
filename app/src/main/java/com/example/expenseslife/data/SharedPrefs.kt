@@ -2,24 +2,23 @@ package com.example.expenseslife.data
 
 import splitties.experimental.ExperimentalSplittiesApi
 import splitties.preferences.Preferences
-import splitties.preferences.SuspendPrefsAccessor
 
 @ExperimentalSplittiesApi
 object SharedPrefs : Preferences("appPreferences") {
-    var expensesFood by stringPref("expensesFood", defaultValue = "")
-    var expensesFun by stringPref("expensesFun", defaultValue = "")
-    var expensesThins by stringPref("expensesThings", defaultValue = "")
+    var expensesFood by floatPref("expensesFood", defaultValue = 0.00F)
+    var expensesFun by floatPref("expensesFun", defaultValue = 0.00F)
+    var expensesThins by floatPref("expensesThings", defaultValue = 0.00F)
     var selectedExpensesType by stringPref("selectedExpensesType", defaultValue = "")
 
     fun resetFood() {
-        expensesFood = ""
+        expensesFood = 0.0F
     }
 
     fun resetFun() {
-        expensesFun = ""
+        expensesFun = 0.0F
     }
 
     fun resetThings() {
-        expensesThins = ""
+        expensesThins = 0.0F
     }
 }
